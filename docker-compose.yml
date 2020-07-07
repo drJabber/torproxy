@@ -1,0 +1,19 @@
+version: '3.1'
+
+services:
+  torproxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    image: djabber/tor_privoxy:v0.1
+    container_name: tor_privoxy
+
+    ports:
+      - '8118:8118'
+      - '9050:9050'
+
+    volumes:
+      - ./data/etc/tor:/etc/tor
+      - ./data/etc/privoxy:/etc/privoxy
+

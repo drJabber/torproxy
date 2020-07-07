@@ -1,0 +1,61 @@
+
+logdir /var/log/privoxy
+logfile privoxy.log
+log-messages 1
+log-highlight-messages 1
+log-messages 1 
+log-buffer-size 1 
+log-max-lines 200 
+log-font-name Comic Sans MS 
+log-font-size 8 
+
+listen-address  0.0.0.0:8118
+
+debug  4096 # Startup banner and warnings.
+debug  8192 # Non-fatal errors
+
+actionsfile /etc/privoxy/match-all.action # Actions that are applied to all sites and maybe overruled later on.
+actionsfile /etc/privoxy/default.action   # Main actions file
+actionsfile /etc/privoxy/user.action      # User customizations
+
+filterfile /etc/privoxy/default.filter
+filterfile /etc/privoxy/user.filter      # User customizations
+
+user-manual /usr/share/doc/privoxy/user-manual/
+
+
+forward-socks5t / 0.0.0.0:9050 .
+forward 172.16.*.*/ .
+forward 172.17.*.*/ .
+forward 172.18.*.*/ .
+forward 172.19.*.*/ .
+forward 172.20.*.*/ .
+forward 172.21.*.*/ .
+forward 172.22.*.*/ .
+forward 172.23.*.*/ .
+forward 172.24.*.*/ .
+forward 172.25.*.*/ .
+forward 172.26.*.*/ .
+forward 172.27.*.*/ .
+forward 172.28.*.*/ .
+forward 172.29.*.*/ .
+forward 172.30.*.*/ .
+forward 172.31.*.*/ .
+forward 10.*.*.*/ .
+forward 192.168.*.*/ .
+forward 127.*.*.*/ .
+forward localhost/ .
+
+toggle  1
+enable-remote-toggle  0
+enable-edit-actions 0
+enable-remote-http-toggle 0
+
+enforce-blocks 0
+buffer-limit 4096
+
+accept-intercepted-requests 1
+forwarded-connect-retries 0 
+split-large-forms 0 
+keep-alive-timeout 300 
+socket-timeout 300 

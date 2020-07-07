@@ -1,0 +1,8 @@
+reuse_threshold: 1
+local_http_proxy: 127.0.0.1:8112
+tor_password: ""
+tor_address: 127.0.0.1
+tor_port: 9051
+new_ip_requests_limit: 10
+new_ip_requests_period: 0.5
+public_ip_service: https://api.ipify.org
