@@ -7,9 +7,8 @@ RUN apk --no-cache --no-progress upgrade && \
     chmod 0750 /etc/tor/run && \
     rm -rf /tmp/*
 
-COPY docker/torproxy.sh /usr/bin/
-
-EXPOSE 8118 9050 9051
+COPY torproxy.sh /usr/bin/
+EXPOSE 8951 9050 8118
 
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
             CMD curl -sx localhost:8118 'https://check.torproject.org/' | \
@@ -17,4 +16,4 @@ HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
 
 VOLUME ["/etc/tor","/etc/privoxy", "/var/lib/tor"]
 
-ENTRYPOINT ["/sbin/tini", "--", "/usr/bin/torproxy.sh"]
+ENTRYPOINT ["/sbin/tini", "--","/usr/bin/torproxy.sh"] 

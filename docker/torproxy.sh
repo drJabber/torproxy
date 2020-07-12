@@ -117,6 +117,8 @@ while getopts ":hb:el:np:s:" opt; do
         "?") echo "Unknown option: -$OPTARG"; usage 1 ;;
         ":") echo "No argument value for option: -$OPTARG"; usage 2 ;;
     esac
+
+    echo "option $opt $OPTARG"
 done
 shift $(( OPTIND - 1 ))
 

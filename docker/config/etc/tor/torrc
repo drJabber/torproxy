@@ -1,14 +1,12 @@
 AutomapHostsOnResolve 1
-ControlPort 9051
+ControlPort 172.20.0.2:8951
 ControlSocket /etc/tor/run/control
 ControlSocketsGroupWritable 1
-CookieAuthentication 1
-CookieAuthFile /etc/tor/run/control.authcookie
-CookieAuthFileGroupReadable 1
 DNSPort 5353
 DataDirectory /var/lib/tor
 ExitPolicy reject *:*
-Log notice stderr
+Log debug file /etc/tor/debug.log
+Log notice file /etc/tor/notice.log
 RunAsDaemon 0
 SocksPort 0.0.0.0:9050 IsolateDestAddr
 TransPort 0.0.0.0:9040
