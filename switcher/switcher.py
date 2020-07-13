@@ -1,15 +1,19 @@
 import asyncio
+from asyncio.tasks import sleep
 import aiohttp
+
 import ipaddress
+
 from .config import config
+
 from stem import Signal
 from stem.control import Controller
-from time import sleep
+
 import errno
 
 
 class Switcher:
-    def __init__(self):
+    def __init__(self,config):
         self._session=aiohttp.ClientSession()
 
         self.reuse_threshold=config.reuse_threshold
@@ -96,7 +100,7 @@ class Switcher:
             controller.authenticate(password=self.tor_password)
             controller.signal(Signal.NEWNYM)
             # controller.close()
-            sleep(self.new_ip_requests_period)
+            await sleep(self.new_ip_requests_period)
             return await self.current_ip
 
 

@@ -6,3 +6,5 @@ tor_port: 8951
 new_ip_requests_limit: 10
 new_ip_requests_period: 0.5
 public_ip_service: https://icanhazip.com
+server_host: 127.0.0.1
+server_port: 8081
