@@ -1,9 +1,10 @@
 import pytest
 from ..switcher import Switcher
+from ..config import config
 
 @pytest.mark.asyncio
 async def test_switcher_real_ip():
-    sw=Switcher()
+    sw=Switcher(config)
     ip=await sw.real_ip
     await sw.close()
     print(f'\nIP address is {ip}')
@@ -11,7 +12,7 @@ async def test_switcher_real_ip():
 
 @pytest.mark.asyncio
 async def test_switcher_current_ip():
-    sw=Switcher()
+    sw=Switcher(config)
     ip=await sw.current_ip
     await sw.close()
     print(f'\ncurrent IP address is {ip}')
@@ -19,7 +20,7 @@ async def test_switcher_current_ip():
 
 @pytest.mark.asyncio
 async def test_switcher_get_new_ip():
-    sw=Switcher()
+    sw=Switcher(config)
     ip1=await sw.current_ip
     print(f'\ncurrent IP address is {ip1}')
     ip2=await sw.get_new_ip()

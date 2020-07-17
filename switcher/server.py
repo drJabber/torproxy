@@ -10,12 +10,12 @@ class Server:
         self._app.add_routes([web.get("/switch", self._handle)])
 
 
-    async def make_response(self):
+    async def _make_response(self):
         new_ip=''
         error=''
         state=200
         try:
-            new_ip=self._switcher.get_new_ip()
+            new_ip=await self._switcher.get_new_ip()
         except Exception as ex:
             error=f"{ex.__class__}: {str(ex)}"
             state=500
@@ -26,8 +26,12 @@ class Server:
     async def _handle(self,request):
         return await self._make_response()
 
+
     async def run(self, host='127.0.0.1', port=80):
         web.run_app(self._app, host=host, port=port)
 
+
+    async def get_app(self):
+        return self._app
 
 
