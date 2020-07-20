@@ -1,22 +1,7 @@
 #!/usr/bin/env bash
-#===============================================================================
-#          FILE: torproxy.sh
-#
-#         USAGE: ./torproxy.sh
-#
-#   DESCRIPTION: Entrypoint for torproxy docker container
-#
-#       OPTIONS: ---
-#  REQUIREMENTS: ---
-#          BUGS: ---
-#         NOTES: ---
-#        AUTHOR: David Personette (dperson@gmail.com),
-#  ORGANIZATION:
-#       CREATED: 09/28/2014 12:11
-#      REVISION: 1.0
-#===============================================================================
 
-set -o nounset                              # Treat unset variables as an error
+# Treat unset variables as an error
+set -o nounset                              
 
 ### bandwidth: set the BW available for relaying
 # Arguments:
@@ -65,7 +50,7 @@ hidden_service() { local port="$1" host="$2" file=/etc/tor/torrc
 newnym() { local file=/etc/tor/run/control.authcookie
     echo -e 'AUTHENTICATE "'"$(cat $file)"'"\nSIGNAL NEWNYM\nQUIT' |
                 nc 127.0.0.1 9051
-    if ps -ef | egrep -v 'grep|torproxy.sh' | grep -q tor; then exit 0; fi
+    if /bin/ps -ef | egrep -v 'grep|enttrpoint.sh' | grep -q tor; then exit 0; fi
 }
 
 ### password: setup a hashed password
@@ -75,7 +60,7 @@ newnym() { local file=/etc/tor/run/control.authcookie
 password() { local passwd="$1" file=/etc/tor/torrc
     sed -i '/^HashedControlPassword/d' $file
     sed -i '/^ControlPort/s/ 9051/ 0.0.0.0:9051/' $file
-    echo "HashedControlPassword $(su - tor -s/bin/bash -c \
+    echo "HashedControlPassword $(su - tord -s/bin/bash -c \
                 "tor --hash-password '$passwd' |tail -n 1")" >>$file 2>/dev/null
 }
 
@@ -105,6 +90,8 @@ The 'command' (if provided and valid) will be run instead of torproxy
     exit $RC
 }
 
+
+echo ****************************************8
 while getopts ":hb:el:np:s:" opt; do
     case "$opt" in
         h) usage ;;
@@ -142,9 +129,9 @@ for env in $(printenv | grep '^TOR_'); do
     fi
 done
 
-chown -R privoxy:privoxy /etc/privoxy
+chown -R privoxy. /etc/privoxy
 
-chown -Rh tor. /etc/tor /var/lib/tor /var/log/tor 2>&1 |
+chown -Rh tord. /etc/tor /var/lib/tor /var/log/tor 2>&1 |
             grep -iv 'Read-only' || :
 
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
@@ -152,8 +139,8 @@ if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
 elif [[ $# -ge 1 ]]; then
     echo "ERROR: command not found: $1"
     exit 13
-elif ps -ef | egrep -v 'grep|torproxy.sh' | grep -q tor; then
-    echo "Service already running, please restart container to apply changes"
+elif ps -ef | egrep -v 'grep|entrypoint.sh' | grep -q tor; then
+    echo "Proxy already running, please restart container to apply changes"
 else
     [[ -e /srv/tor/hidden_service/hostname ]] && {
         echo -en "\nHidden service hostname: "

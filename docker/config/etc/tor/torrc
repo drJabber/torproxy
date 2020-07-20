@@ -10,5 +10,5 @@ Log notice file /etc/tor/notice.log
 RunAsDaemon 0
 SocksPort 0.0.0.0:9050 IsolateDestAddr
 TransPort 0.0.0.0:9040
-User tor
+User tord
 VirtualAddrNetworkIPv4 10.192.0.0/10

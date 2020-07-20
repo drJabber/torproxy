@@ -1,8 +1,8 @@
-from .config import config
+from config import config
 import switcher
 import server
 
-def main():
+if __name__=='__main__':
     sw=switcher.Switcher(config)
     srv=server.Server(sw)
     srv.run(config.server_host, config.server_port)

@@ -27,7 +27,7 @@ class Server:
         return await self._make_response()
 
 
-    async def run(self, host='127.0.0.1', port=80):
+    def run(self, host='127.0.0.1', port=80):
         web.run_app(self._app, host=host, port=port)
 
 

@@ -4,8 +4,6 @@ import aiohttp
 
 import ipaddress
 
-from .config import config
-
 from stem import Signal
 from stem.control import Controller
 
