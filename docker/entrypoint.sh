@@ -91,7 +91,6 @@ The 'command' (if provided and valid) will be run instead of torproxy
 }
 
 
-echo ****************************************8
 while getopts ":hb:el:np:s:" opt; do
     case "$opt" in
         h) usage ;;
@@ -134,6 +133,8 @@ chown -R privoxy. /etc/privoxy
 chown -Rh tord. /etc/tor /var/lib/tor /var/log/tor 2>&1 |
             grep -iv 'Read-only' || :
 
+python /app/proxy_switcher.py & 
+
 if [[ $# -ge 1 && -x $(which $1 2>&-) ]]; then
     exec "$@"
 elif [[ $# -ge 1 ]]; then
@@ -148,3 +149,6 @@ else
     /usr/sbin/privoxy --user privoxy /etc/privoxy/config
     exec /usr/bin/tor
 fi
+
+
+

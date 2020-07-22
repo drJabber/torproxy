@@ -2,4 +2,4 @@
 
 cp -R ./docker/config/* ./data
 
-docker-compose up --build
+docker-compose build

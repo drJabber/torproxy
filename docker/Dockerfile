@@ -41,7 +41,10 @@ RUN apt-get update -y && \
 
 ADD docker/entrypoint.sh /usr/bin/
 ADD ./switcher/* /app/
-EXPOSE 8951 9050 8118
+
+WORKDIR /app
+RUN pip install -r requirements.txt
+EXPOSE 8951 9050 8118 8081
 
 HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
             CMD curl -sx localhost:8118 'https://check.torproject.org/' | \
