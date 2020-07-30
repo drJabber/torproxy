@@ -1,6 +1,8 @@
 FROM python:3.8-slim-buster
 
-ENV TINI_VERSION v0.18.0
+ADD https://github.com/just-containers/s6-overlay/releases/download/v2.0.0.1/s6-overlay-amd64.tar.gz /tmp/
+RUN gunzip -c /tmp/s6-overlay-amd64.tar.gz | tar -xf - -C /
+
 
 RUN apt-get update -y && \
     apt-get install --no-install-recommends --no-install-suggests -y \ 
@@ -16,9 +18,6 @@ RUN apt-get update -y && \
     gpg --export A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89 | apt-key add - && \
     echo "deb https://deb.torproject.org/torproject.org buster main"   >  /etc/apt/sources.list.d/tor-apt-sources.list && \
     echo "deb-src https://deb.torproject.org/torproject.org buster main" >> /etc/apt/sources.list.d/tor-apt-sources.list && \
-    #install tini
-    curl -L https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini -o /sbin/tini && \
-    chmod +x /sbin/tini && \
     # Install tor \
     apt-get update -y && \
     apt-get install --no-install-recommends --no-install-suggests -y \ 
@@ -36,21 +35,27 @@ RUN apt-get update -y && \
     # Rename Debian unprivileged user to tord \
     usermod -l tord debian-tor && \
     groupmod -n tord debian-tor && \
-    mkdir /app && \
     rm -rf /tmp/* 
+    # rm /etc/init.d/tor && \
+    # rm /etc/init.d/privoxy
 
-ADD docker/entrypoint.sh /usr/bin/
-ADD ./switcher/* /app/
+ADD ./switcher/requirements.txt /etc/services.d/app/
 
-WORKDIR /app
-RUN pip install -r requirements.txt
+RUN pip install -r /etc/services.d/app/requirements.txt
+
+ADD docker/s6/etc/ /etc 
+ADD docker/entrypoint.sh /
+ADD ./switcher/* /etc/services.d/app/
+
 EXPOSE 8951 9050 8118 8081
 
-HEALTHCHECK --interval=60s --timeout=15s --start-period=20s \
+HEALTHCHECK --interval=600s --timeout=15s --start-period=20s \
             CMD curl -sx localhost:8118 'https://check.torproject.org/' | \
             grep -qm1 Congratulations
 
 VOLUME ["/etc/tor","/etc/privoxy"]
 
-ENTRYPOINT ["/sbin/tini", "--","/usr/bin/entrypoint.sh"] 
+#ENTRYPOINT ["/sbin/tini", "--","/usr/bin/entrypoint.sh"] 
 # ENTRYPOINT ["/usr/bin/entrypoint.sh"] 
+
+ENTRYPOINT [ "/entrypoint.sh" ]

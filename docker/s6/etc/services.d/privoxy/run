@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+echo "starting privoxy"
+# [ ! -f /run/privoxy.pid ] && /etc/init.d/privoxy start  
+
+exec /usr/sbin/privoxy --user privoxy --no-daemon /etc/privoxy/config
+

@@ -1,5 +1,4 @@
 AutomapHostsOnResolve 1
-ControlPort 172.20.0.2:8951
 ControlSocket /etc/tor/run/control
 ControlSocketsGroupWritable 1
 DNSPort 5353

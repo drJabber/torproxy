@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv sh
+
+python3.8 ./proxy_switcher.py
+

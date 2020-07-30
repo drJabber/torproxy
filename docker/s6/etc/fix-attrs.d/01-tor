@@ -1,0 +1,4 @@
+/etc/privoxy true privoxy 
+/etc/tor true tord
+/var/lib/tor true tord
+/var/log/tor true tord

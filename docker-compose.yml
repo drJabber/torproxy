@@ -6,6 +6,10 @@ services:
       context: .
       dockerfile: ./docker/Dockerfile
 
+    # networks:
+    #   torproxy_nw:
+    #     ipv4_address: 172.20.0.2
+
     env_file:
       - ./docker/tor_privoxy.env
   
@@ -13,12 +17,15 @@ services:
     container_name: tor_privoxy
 
     ports:
-      - '127.0.0.1:8951:8951'
+      # - '127.0.0.1:8951:8951'
       - '8118:8118'
-      - '9050:9050'
-      - '127.0.0.1:8081:8081'
+      # - '9050:9050'
+      - '8081:8081'
 
     volumes:
       - ./data/etc/tor:/etc/tor
       - ./data/etc/privoxy:/etc/privoxy
 
+# networks: 
+#   torproxy_nw:
+#     driver: bridge
