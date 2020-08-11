@@ -1,5 +1,5 @@
 
-logdir /var/log/privoxy
+logdir /etc/privoxy
 logfile privoxy.log
 log-messages 1
 log-highlight-messages 1
@@ -38,7 +38,10 @@ filterfile /etc/privoxy/user.filter      # User customizations
 user-manual /usr/share/doc/privoxy/user-manual/
 
 
-forward-socks5t / 0.0.0.0:9050 .
+forward-socks5t / 127.0.0.1:9050 .
+forward-socks5 / 127.0.0.1:9050 .
+forward-socks4a / 127.0.0.1:9050 .
+
 forward 172.16.*.*/ .
 forward 172.17.*.*/ .
 forward 172.18.*.*/ .
